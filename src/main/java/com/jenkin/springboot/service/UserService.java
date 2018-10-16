@@ -1,9 +1,8 @@
 package com.jenkin.springboot.service;
 
 import com.jenkin.springboot.pojo.User;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jenkinwang
@@ -11,11 +10,13 @@ import java.util.List;
  * @description:
  */
 public interface UserService {
-    public List<User> getAll();
+    Map<String, User> getAll();
 
     void addUser(User user);
 
-    void deleteUserByName(String name);
+    void deleteUserById(String id);
 
-    void updateUserByName(User user, String name);
+    void updateUserById(User user, String id);
+
+    User getUserById(String id);
 }

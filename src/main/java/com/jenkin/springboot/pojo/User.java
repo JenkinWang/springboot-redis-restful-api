@@ -2,13 +2,17 @@ package com.jenkin.springboot.pojo;
 
 import org.springframework.context.annotation.Configuration;
 
+import java.io.Serializable;
+
 /**
  * @author: jenkinwang
  * @date: 2018/10/14 13:21
  * @description:
  */
 @Configuration
-public class User {
+public class User implements Serializable {
+
+    private String id;
     private String name;
     private Integer age;
     private String email;
@@ -19,6 +23,14 @@ public class User {
         this.name = name;
         this.age = age;
         this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

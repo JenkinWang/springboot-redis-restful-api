@@ -2,12 +2,11 @@ package com.jenkin.springboot.service.impl;
 
 import com.jenkin.springboot.pojo.User;
 import com.jenkin.springboot.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: jenkinwang
@@ -16,41 +15,34 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private List<User> users = new ArrayList<>(Arrays.asList(
-            new User("jenkin", 24, "jenkin@gmail.com"),
-            new User("danny", 25, "danny@gmail.com"),
-            new User("Alice", 25, "alice@gmail.com")
-    ));
+
+    @Autowired
+    private HashOperations hashOperations;
 
     @Override
-    public List<User> getAll() {
-        return users;
+    public Map<String, User> getAll() {
+        Map<String, User> map = hashOperations.entries("USERS");
+        return map;
     }
 
     @Override
     public void addUser(User user) {
-        users.add(user);
+        hashOperations.put("USERS", user.getId(), user);
     }
 
     @Override
-    public void deleteUserByName(String name) {
-        Iterator<User> userIterator = users.iterator();
-        while (userIterator.hasNext()) {
-            User user = userIterator.next();
-            if (name.equals(user.getName())) {
-                userIterator.remove();
-            }
-        }
+    public void deleteUserById(String id) {
+        hashOperations.delete("USERS", id);
     }
 
     @Override
-    public void updateUserByName(User user, String name) {
-        for (User _user : users) {
-            if (name.equals(_user.getName())) {
-                _user.setName(user.getName());
-                _user.setAge(user.getAge());
-                _user.setEmail(user.getEmail());
-            }
-        }
+    public void updateUserById(User user, String id) {
+        hashOperations.put("USERS", id, user);
     }
+
+    @Override
+    public User getUserById(String id) {
+        return (User) hashOperations.get("USERS", id);
+    }
+
 }

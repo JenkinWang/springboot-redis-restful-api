@@ -5,8 +5,7 @@ import com.jenkin.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author: jenkinwang
@@ -27,8 +26,17 @@ public class UserController {
      * @return
      */
     @RequestMapping("/users")
-    public List<User> getAll() {
+    public Map<String, User> getAll() {
         return userService.getAll();
+    }
+
+    /**
+     * GET
+     * @return
+     */
+    @RequestMapping("/users/{id}")
+    public User getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
     }
 
     /**
@@ -42,17 +50,17 @@ public class UserController {
     /**
      * DELETE
      */
-    @RequestMapping(value = "/users/{name}", method = RequestMethod.DELETE)
-    public void deleteUserByName(@PathVariable String name) {
-        userService.deleteUserByName(name);
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    public void deleteUserById(@PathVariable String id) {
+        userService.deleteUserById(id);
     }
 
     /**
      * PUT
      */
-    @RequestMapping(value = "/users/{name}", method = RequestMethod.PUT)
-    public void updateUserByName(@RequestBody User user, @PathVariable String name) {
-        userService.updateUserByName(user, name);
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
+    public void updateUserById(@RequestBody User user, @PathVariable String id) {
+        userService.updateUserById(user, id);
     }
 
 }
